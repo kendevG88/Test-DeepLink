@@ -1,10 +1,30 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Deep Link Buttons</title>
+    <style>
+        button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
 <body>
     <h1>Test Deep Link</h1>
-    <a href="com.gn.khogame://open">com.gn.khogame://open</a>
-    <a href="com.gn.khogame://openfeature">com.gn.khogame://openfeature</a>
-    <a href="com.gn.khogame://openwebview/https://kendevg88.github.io/AquariumUnityWebGL">com.gn.khogame://openwebview/ Aquarium</a>
-    <a href="https://kendevg88.github.io/PumpkinRunCocosWebExport">com.gn.khogame://openwebview/ Pumpkin</a>
+    <button onclick="openDeepLink('com.gn.khogame://open')">Open</button>
+    <button onclick="openDeepLink('com.gn.khogame://openfeature')">Open Feature</button>
+    <button onclick="openDeepLink('com.gn.khogame://openwebview/https://kendevg88.github.io/AquariumUnityWebGL')">Open Aquarium</button>
+    <button onclick="openDeepLink('com.gn.khogame://openwebview/https://kendevg88.github.io/PumpkinRunCocosWebExport')">Open Pumpkin</button>
 
+    <script>
+        function openDeepLink(url) {
+            // Điều này sẽ cố gắng mở deep link
+            // Tuy nhiên, lưu ý rằng trình duyệt web có thể không hỗ trợ mở deep links trực tiếp
+            window.location.href = url;
+        }
+    </script>
 </body>
 </html>
