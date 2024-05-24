@@ -55,7 +55,8 @@
                 }
             } else if (action === 'read') {
                 const storedSource = localStorage.getItem('source');
-                if (storedSource & storedSource != "") {
+                console.log('sources: ' + storedSource);
+                if (storedSource) {
                     output.textContent = 'Data retrieved from localStorage: ' + storedSource;
                     window.location.href = 'external@com.gn.khogame://openwebview/https://kendevg88.github.io/vm?source=' + storedSource; 
                 } else {
