@@ -14,13 +14,20 @@
 </head>
 <body>
     <h1>Add User Info</h1>
-    <button onclick="openUrl('https://go88vm.com')">Go88vm.com</button>
+    <button onclick="getData()">Get data</button>
     <div id="output"></div>
     <script>
         const apiUrl = 'https://script.google.com/macros/s/AKfycby5K0_rDhEXrLD_jj2uU6TusvkqvM-ZvB8gx1ifBaDj-w0F3DvGwCgv3MG2uJA7ym8e/exec';
         function openUrl(url){
             window.location.href = url;
         }
+
+        function getData(){
+            getIP((ip) => {
+                getDataFromSheet(ip);
+            })
+        }
+
         function clearLocalStorage(key){
             localStorage.removeItem(key);
         }
@@ -77,6 +84,15 @@
             })
             .then(response => response.json())
             .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getDataFromSheet(key) {
+            fetch(apiUrl + '?action=read&key=' + key)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            } )
             .catch(error => console.error('Error:', error));
         }
 
