@@ -36,22 +36,28 @@
             const platform = getParameterByName('platform');
             const output = document.getElementById('output');
 
-            if (action === 'write' && source) {
-                localStorage.setItem('source', source);
-                output.textContent = 'Data written to localStorage: ' + source;
-                if(platform === 'android'){
-                    window.location.href = 'https://play.google.com/store/apps/details?id=com.gn.khogame&referrer=utm_source%3Dopenwebview%2Fhttps%3A%2F%2Fkendevg88.github.io%2Fvm';
+            if (action === 'write') {
+                if(source)
+                {
+                    localStorage.setItem('source', source);
+                    output.textContent = 'Data written to localStorage: ' + source;
                 }
-                else if(platform === 'ios'){
-                    window.location.href = 'https://apps.apple.com/app/id6502967054';
-                }
+                if(platform)
+                {
+                    localStorage.setItem('platform', platform);
+                
+                    if(platform === 'android'){
+                        window.location.href = 'https://play.google.com/store/apps/details?id=com.gn.khogame&referrer=utm_source%3Dopenwebview%2Fhttps%3A%2F%2Fkendevg88.github.io%2Fvm';
+                    }
+                    else if(platform === 'ios'){
+                        window.location.href = 'https://apps.apple.com/app/id6502967054';
+                    }
+                } 
             } else if (action === 'read') {
                 const storedSource = localStorage.getItem('source');
-                if (storedSource) {
+                if (storedSource & storedSource != "") {
                     output.textContent = 'Data retrieved from localStorage: ' + storedSource;
-                    if (typeof Unity !== 'undefined') {
-                        Unity.call("utm_source:" + storedSource);
-                    }
+                    window.location.href = 'external@com.gn.khogame://openwebview/https://kendevg88.github.io/vm?source=' + storedSource; 
                 } else {
                     output.textContent = 'No data found in localStorage.';
                 }
