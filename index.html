@@ -15,22 +15,27 @@
 <body>
     <h1>Add User Info</h1>
     <button onclick="getData()">Get data</button>
+    <button onclick="removeData()">Remove data</button>
     <div id="output"></div>
     <script>
-        const apiUrl = 'https://script.google.com/macros/s/AKfycby5K0_rDhEXrLD_jj2uU6TusvkqvM-ZvB8gx1ifBaDj-w0F3DvGwCgv3MG2uJA7ym8e/exec';
         function openUrl(url){
             window.location.href = url;
         }
 
         function getData(){
             getIP((ip) => {
-                getDataFromSheet(ip);
+                getRowById(ip);
             })
         }
 
-        function clearLocalStorage(key){
-            localStorage.removeItem(key);
+        function removeData(){
+            getIP((ip) => {
+                removeRowById(ip);
+            })
         }
+
+        const apiEndPointUrl = 'https://sheetdb.io/api/v1/wprvb0lsfhyk1';
+
         function getParameterByName(name, url = window.location.href) {
             name = name.replace(/[\[\]]/g, '\\$&');
             var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -45,15 +50,15 @@
             const source = getParameterByName('source');
             const platform = getParameterByName('platform');
             const output = document.getElementById('output');
-            const now = new Date();
-            const utcDate = now.toUTCString();
+            
 
             if (action === 'write') {
 
                 let cb = (ip) => {
-                    writeDataToSheet(ip, platform, utcDate, source)
-                }
-                getIP(cb)
+                    console.log('post new id');
+                    checkAndPostOrUpdate(ip,source);
+                };
+                getIP(cb);
             } 
             else if (action === 'read') {
 
@@ -73,25 +78,84 @@
                 .catch(error => console.error('Error fetching IP:', error));
         }
 
-        function writeDataToSheet(key, platform, time, source) {
+        function checkAndPostOrUpdate(id, source) {
 
-            fetch(apiUrl, {
-                method: 'POST',
-                body: JSON.stringify({ action: 'write', 'key': key, 'platform': platform, 'time': time, 'source': source })
+            const now = new Date();
+            const options = { timeZone: 'Asia/Bangkok', timeZoneName: 'short' };
+            const localDate = now.toLocaleString('en-US', options);
+
+            const platform = navigator.platform;
+
+            fetch(apiEndPointUrl + `/search?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                if (data.length > 0) {
+                    // Nếu có dữ liệu tồn tại, thực hiện cập nhật
+                    console.log('update row');
+                    updateRow(id, source, localDate, platform);
+                } else {
+                    // Nếu không tồn tại, thực hiện thêm mới
+                    console.log('post new row');
+                    postNewRow(id, source, localDate, platform);
+                }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        
+        function updateRow(id, source, time, platform) {
+
+            fetch(apiEndPointUrl + `/id/${id}`, {
+                method: 'PUT',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ data: { 'source': source, 'time': time , 'platform' : platform} })
             })
-            .then(res => res.json())
-            .then(res => console.log(res))
-            .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => console.log('Updated Successfully:', data))
+            .catch(error => console.error('Update Error:', error));
         }
 
-        function getDataFromSheet(key) {
-            fetch(apiUrl + '?action=read&key=' + key)
+        function postNewRow(id, source, time, platform) {
+            fetch(apiEndPointUrl, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ data: { 'id': id, 'source': source, 'time': time, 'platform' : platform } })
+            })
             .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            } )
-            .catch(error => console.error('Error:', error));
+            .then(data => console.log('Posted Successfully:', data))
+            .catch(error => console.error('Post Error:', error));
         }
+
+        function getRowById(id) {
+            fetch( apiEndPointUrl + `/search?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                if (data.length > 0) {
+                    console.log('Data Found:', data);
+                } else {
+                    console.log('No data found for ID:', id);
+                return null;
+                }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function removeRowById(id){
+            fetch(apiEndPointUrl + `/id/${id}`, {
+                method: 'PUT',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ data: { 'id' : '', source: '', time: '' , platform : ''} })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Updated Successfully:', data))
+            .catch(error => console.error('Update Error:', error));
+        }
+
 
         main();
 
