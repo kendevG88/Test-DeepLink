@@ -73,7 +73,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 'key ': key, 'platform': platform, 'time': time, 'source': source })
+                body: JSON.stringify({ action: 'write', 'key': key, 'platform': platform, 'time': time, 'source': source })
             })
             .then(response => response.json())
             .then(data => console.log(data))
