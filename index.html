@@ -14,10 +14,12 @@
 </head>
 <body>
     <h1>Add User Info</h1>
-    <button onclick="clearLocalStorage('source')">Clear Source </button>
+    <button onclick="openUrl('https://go88vm.com')">Go88vm.com</button>
     <div id="output"></div>
     <script>
-
+        function openUrl(url){
+            window.location.href = url;
+        }
         function clearLocalStorage(key){
             localStorage.removeItem(key);
         }
