@@ -30,44 +30,55 @@
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
 
-        function handleLocalStorage() {
+        function main() {
             const action = getParameterByName('action');
             const source = getParameterByName('source');
             const platform = getParameterByName('platform');
             const output = document.getElementById('output');
+            const now = new Date();
+            const utcDate = now.toUTCString();
 
             if (action === 'write') {
-                if(source)
-                {
-                    localStorage.setItem('source', source);
-                    output.textContent = 'Data written to localStorage: ' + source;
+
+                cb = (ip) => {
+                    writeDataToSheet(ip, platform, utcDate, source)
                 }
-                if(platform)
-                {
-                    localStorage.setItem('platform', platform);
-                
-                    if(platform === 'android'){
-                        window.location.href = 'https://play.google.com/store/apps/details?id=com.gn.khogame&referrer=utm_source%3Dopenwebview%2Fhttps%3A%2F%2Fkendevg88.github.io%2Fvm';
-                    }
-                    else if(platform === 'ios'){
-                        window.location.href = 'https://apps.apple.com/app/id6502967054';
-                    }
-                }
-            } else if (action === 'read') {
-                const storedSource = localStorage.getItem('source');
-                console.log('sources: ' + storedSource);
-                if (storedSource) {
-                    output.textContent = 'Data retrieved from localStorage: ' + storedSource;
-                    window.location.href = 'external@com.gn.khogame://openwebview/https://kendevg88.github.io/vm?source=' + storedSource; 
-                } else {
-                    output.textContent = 'No data found in localStorage.';
-                }
-            } else {
+                getIP(cb)
+            } 
+            else if (action === 'read') {
+
+            } 
+            else {
                 output.textContent = 'Invalid action or source parameter.';
             }
         }
 
-        handleLocalStorage();
+        function getIP(cb){
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => { 
+                    console.log('IP Address:', data.ip);
+                    cb(data.ip);
+                })
+                .catch(error => console.error('Error fetching IP:', error));
+        }
+
+        function writeDataToSheet(key, platform, time, source) {
+            fetch('https://script.google.com/macros/s/AKfycby5K0_rDhEXrLD_jj2uU6TusvkqvM-ZvB8gx1ifBaDj-w0F3DvGwCgv3MG2uJA7ym8e/exec', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ action: 'write', key: key, platform: platform, time: time, source: source })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        main();
+
+        
     </script>
 </body>
 </html>
