@@ -17,6 +17,7 @@
     <button onclick="openUrl('https://go88vm.com')">Go88vm.com</button>
     <div id="output"></div>
     <script>
+        const apiUrl = 'https://script.google.com/macros/s/AKfycby5K0_rDhEXrLD_jj2uU6TusvkqvM-ZvB8gx1ifBaDj-w0F3DvGwCgv3MG2uJA7ym8e/exec';
         function openUrl(url){
             window.location.href = url;
         }
@@ -66,13 +67,13 @@
         }
 
         function writeDataToSheet(key, platform, time, source) {
-            fetch('https://script.google.com/macros/s/AKfycby5K0_rDhEXrLD_jj2uU6TusvkqvM-ZvB8gx1ifBaDj-w0F3DvGwCgv3MG2uJA7ym8e/exec', {
+
+            fetch(apiUrl, {
                 method: 'POST',
-                mode: 'cors',
                 headers: {
-                'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ action: 'write', key: key, platform: platform, time: time, source: source })
+                body: JSON.stringify({ 'key ': key, 'platform': platform, 'time': time, 'source': source })
             })
             .then(response => response.json())
             .then(data => console.log(data))
