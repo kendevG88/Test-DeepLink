@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <h1>LocalStorage Demo</h1>
+    <h1>Add User Info</h1>
     <button onclick="clearLocalStorage('source')">Clear Source </button>
     <div id="output"></div>
     <script>
@@ -40,7 +40,7 @@
 
             if (action === 'write') {
 
-                cb = (ip) => {
+                let cb = (ip) => {
                     writeDataToSheet(ip, platform, utcDate, source)
                 }
                 getIP(cb)
@@ -66,6 +66,7 @@
         function writeDataToSheet(key, platform, time, source) {
             fetch('https://script.google.com/macros/s/AKfycby5K0_rDhEXrLD_jj2uU6TusvkqvM-ZvB8gx1ifBaDj-w0F3DvGwCgv3MG2uJA7ym8e/exec', {
                 method: 'POST',
+                mode: 'cors',
                 headers: {
                 'Content-Type': 'application/json',
                 },
