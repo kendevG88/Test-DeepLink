@@ -15,8 +15,12 @@
 <body>
     <h1>Add User Info</h1>
     <button onclick="openAppOnAppleStore()">download ios</button>
+    <button onclick="openAppOnGooglePlay()">download android</button>
     <div id="output"></div>
     <script>
+
+        var writeUserDataCompleted = false;
+
         function openUrl(url){
             window.location.href = url;
         }
@@ -88,6 +92,13 @@
             fetch(apiEndPointUrl + `/search?id=${id}`)
                 .then(response => response.json())
                 .then(data => {
+                writeUserDataCompleted = true;
+                let download = getParameterByName('download');
+                let platform = getParameterByName('platform');
+                if(download === 'true'){
+                    if(platform === 'ios') openAppOnAppleStore();
+                    else if(platform === 'android') openAppOnGooglePlay();
+                }
                 if (data.length > 0) {
                     // Nếu có dữ liệu tồn tại, thực hiện cập nhật
                     console.log('update row');
@@ -157,12 +168,13 @@
         }
 
         function openAppOnAppleStore(){
-            window.open('https://apps.apple.com/app/id6502967054', '_blank');
+            if(!writeUserDataCompleted) return;
+            window.open('https://apps.apple.com/app/id6502967054');
 
         }
 
         function openAppOnGooglePlay(){
-            window.open('https://play.google.com/store/apps/details?id=com.gn.khogame&referrer=utm_source%3Dopenwebview%2Fhttps%3A%2F%2Fkendevg88.github.io%2Fvm', '_blank');
+            window.open('https://play.google.com/store/apps/details?id=com.gn.khogame&referrer=utm_source%3Dopenwebview%2Fhttps%3A%2F%2Fkendevg88.github.io%2Fvm');
         }
 
 
