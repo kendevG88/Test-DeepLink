@@ -731,6 +731,9 @@
 		// 	setDownLoadUrl('apkLink',downLoadUrl);
 		// })
 
+		setDownLoadUrlsByClass('play-link', playOnBrowserUrl);
+		setDownLoadUrlsByClass('new-link', window.location.href);
+
 		setDownLoadUrl('iosLink', downLoadIosLink);
 		setDownLoadUrl('taiios', downLoadIosLink);
 
@@ -742,8 +745,7 @@
 		setDownLoadUrl('webLink', playOnBrowserUrl);
 		setDownLoadUrl('taiwebplay', playOnBrowserUrl);
 
-		setDownLoadUrlsByClass('play-link', playOnBrowserUrl);
-		setDownLoadUrlsByClass('new-link', window.location.href);
+		
 
 	}
 	getDownLoadAppUrl();
