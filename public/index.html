@@ -651,15 +651,16 @@
 		})
 		getUrl('android', (returnString) => {
 
-			let downLoadUrl = returnString + source;
+			let downLoadUrl = returnString + (source? '&source=' + source : '');
 			downLoadAndroidLink = downLoadUrl;
+			console.log('-----android url ' + downLoadAndroidLink );
 			setDownLoadUrl('androidLink',downLoadUrl);
 			setDownLoadUrl('taiggplay',downLoadUrl);
 		})
 
 		getUrl('apk', (returnString) => {
 
-			let downLoadUrl = returnString;
+			let downLoadUrl = returnString + (source? '&source=' + source : '');
 			setDownLoadUrl('apkLink',downLoadUrl);
 		})
 
