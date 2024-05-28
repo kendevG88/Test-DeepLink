@@ -515,7 +515,7 @@
 		const output = document.getElementById('output');
 		
 		let userIp = localStorage.getItem('userIp');
-		if (action === 'write' || !userIp) {
+		if (action === !userIp || 'write') {
 			let cb = (ip) => {
 				console.log('post new ip');
 				localStorage.setItem('userIp', ip);
@@ -595,84 +595,7 @@
 </script>
 
 
-<script>
-	function getDownLoadAppUrl(){
-		let getParamByName = (name, url = window.location.href) => {
-			name = name.replace(/[\[\]]/g, '\\$&');
-			var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-				results = regex.exec(url);
-			if (!results) return null;
-			if (!results[2]) return '';
-			return decodeURIComponent(results[2].replace(/\+/g, ' '));
-		}
-		const platform = navigator.platform;
 
-		let source = getParamByName('source');
-
-		let playOnBrowserUrl = 'https://play.go88vm.com' + (source? '?source=' + source : '');
-
-		let downLoadIosLink = '';
-		let downLoadAndroidLink = '';
-
-		let getUrl = (urlPlatform, cb)=>{
-			let sheetApiEndPointUrl = 'https://sheetdb.io/api/v1/k6nlu7ysoto51';
-			fetch( sheetApiEndPointUrl + `/search?platform=` + urlPlatform)
-			.then(response => response.json())
-			.then(data => {
-			if (data.length > 0) {
-				console.log('Data Found:', data);
-				cb(data[0].url);
-			}
-			})
-			.catch(error => console.error('Error fetching data:', error));
-		}
-
-		let setDownLoadUrl = (elementId, url)=>{
-			var appLink = document.getElementById(elementId);
-			if (appLink) {
-				appLink.href = url;
-			}
-		}
-		
-		let setDownloadUrlsByClass = (className, url) => {
-			var appLinks = document.getElementsByClassName(className);
-			if (appLinks) {
-				Array.from(appLinks).forEach(function(appLink) {
-					appLink.href = url;
-				});
-			}
-		}
-		getUrl('ios', (returnString) => {
-			
-			let downLoadUrl = returnString;
-			downLoadIosLink = downLoadUrl;
-			setDownLoadUrl('iosLink',downLoadUrl);
-			setDownLoadUrl('taiios',downLoadUrl);
-		})
-		getUrl('android', (returnString) => {
-
-			let downLoadUrl = returnString + (source? '&source=' + source : '');
-			downLoadAndroidLink = downLoadUrl;
-			console.log('-----android url ' + downLoadAndroidLink );
-			setDownLoadUrl('androidLink',downLoadUrl);
-			setDownLoadUrl('taiggplay',downLoadUrl);
-		})
-
-		getUrl('apk', (returnString) => {
-
-			let downLoadUrl = returnString + (source? '&source=' + source : '');
-			setDownLoadUrl('apkLink',downLoadUrl);
-		})
-
-		setDownloadUrl('webLink', playOnBrowserUrl);
-		setDownloadUrl('taiwebplay', playOnBrowserUrl);
-
-		setDownloadUrlsByClass('play-link', playOnBrowserUrl);
-		setDownloadUrlsByClass('new-link', window.location.href);
-
-	}
-	getDownLoadAppUrl();
-</script>
 
 
 <script>
@@ -729,6 +652,103 @@
 		boxesPlay[i].setAttribute('href', oldUrlPlay + paramStringPlay);
 	}
 </script>
+
+<script>
+	function getDownLoadAppUrl(){
+		let getParamByName = (name, url = window.location.href) => {
+			name = name.replace(/[\[\]]/g, '\\$&');
+			var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+				results = regex.exec(url);
+			if (!results) return null;
+			if (!results[2]) return '';
+			return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		}
+		const platform = navigator.platform;
+
+		let source = getParamByName('source');
+
+		
+
+		let downLoadIosLink = 'https://apps.apple.com/app/id6502967054';
+		let downLoadAndroidLink = 'https://play.google.com/store/apps/details?id=com.gn.khogame&referrer=utm_source%3Dopenwebview%2Fhttps%3A%2F%2Fkendevg88.github.io%2Fvm';
+		let downLoadApkLink = 'https://play.google.com/store/apps/details?id=com.gn.khogame&referrer=utm_source%3Dopenwebview%2Fhttps%3A%2F%2Fkendevg88.github.io%2Fvm';
+
+		let playOnBrowserUrl = 'https://play.go88vm.com' + (source? '?source=' + source : '');
+
+		let setDownLoadUrl = (elementId, url)=>{
+			var appLink = document.getElementById(elementId);
+			if (appLink) {
+				console.log('----id '+ elementId + 'url ' + url );
+				appLink.href = url;
+			}
+		}
+		
+		let setDownLoadUrlsByClass = (className, url) => {
+			var appLinks = document.getElementsByClassName(className);
+			if (appLinks) {
+				Array.from(appLinks).forEach(function(appLink) {
+					appLink.href = url;
+				});
+			}
+		}
+
+		// let getUrl = (urlPlatform, cb)=>{
+		// 	let sheetApiEndPointUrl = 'https://sheetdb.io/api/v1/k6nlu7ysoto51';
+		// 	fetch( sheetApiEndPointUrl + `/search?platform=` + urlPlatform)
+		// 	.then(response => response.json())
+		// 	.then(data => {
+		// 	if (data.length > 0) {
+		// 		console.log('Data Found:', data);
+		// 		cb(data[0].url);
+		// 	}
+		// 	})
+		// 	.catch(error => {
+		// 		console.error('Error fetching data:', error);
+
+
+		// 	});
+		// }
+
+		// getUrl('ios', (returnString) => {
+			
+		// 	let downLoadUrl = returnString;
+		// 	downLoadIosLink = downLoadUrl;
+		// 	setDownLoadUrl('iosLink',downLoadUrl);
+		// 	setDownLoadUrl('taiios',downLoadUrl);
+		// })
+		// getUrl('android', (returnString) => {
+
+		// 	let downLoadUrl = returnString + (source? '&source=' + source : '');
+		// 	downLoadAndroidLink = downLoadUrl;
+		// 	console.log('-----android url ' + downLoadAndroidLink );
+		// 	setDownLoadUrl('androidLink',downLoadUrl);
+		// 	setDownLoadUrl('taiggplay',downLoadUrl);
+		// })
+
+		// getUrl('apk', (returnString) => {
+
+		// 	let downLoadUrl = returnString + (source? '&source=' + source : '');
+		// 	setDownLoadUrl('apkLink',downLoadUrl);
+		// })
+
+		setDownLoadUrl('iosLink', downLoadIosLink);
+		setDownLoadUrl('taiios', downLoadIosLink);
+
+		setDownLoadUrl('androidLink', downLoadAndroidLink + (source? '&source=' + source : ''));
+		setDownLoadUrl('taiggplay', downLoadAndroidLink + (source? '&source=' + source : ''));
+
+		setDownLoadUrl('apkLink', downLoadApkLink + (source? '&source=' + source : ''));
+
+		setDownLoadUrl('webLink', playOnBrowserUrl);
+		setDownLoadUrl('taiwebplay', playOnBrowserUrl);
+
+		setDownLoadUrlsByClass('play-link', playOnBrowserUrl);
+		setDownLoadUrlsByClass('new-link', window.location.href);
+
+	}
+	getDownLoadAppUrl();
+</script>
+
 <noscript>
 	<a href="https://www.livechatinc.com/chat-with/14863323/" rel="nofollow">Chat with us</a>,
 	powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a>
