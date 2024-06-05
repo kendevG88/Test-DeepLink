@@ -515,7 +515,7 @@
 		const output = document.getElementById('output');
 		
 		let userIp = localStorage.getItem('userIp');
-		if (action === !userIp || 'write') {
+		if (!userIp || action === 'write') {
 			let cb = (ip) => {
 				console.log('post new ip');
 				localStorage.setItem('userIp', ip);
@@ -533,6 +533,17 @@
 
 	function getIP(cb){
 		fetch('https://api.ipify.org?format=json')
+			.then(response => response.json())
+			.then(data => { 
+				console.log('IP Address:', data.ip);
+				cb(data.ip);
+			})
+			.catch(error => console.error('Error fetching IP:', error));
+	}
+
+	function getDeviceId(){
+		
+		fetch('https://api.dotcom-monitor.com/config_api_v1/device/')
 			.then(response => response.json())
 			.then(data => { 
 				console.log('IP Address:', data.ip);
@@ -593,9 +604,6 @@
 
 	main();
 </script>
-
-
-
 
 
 <script>
